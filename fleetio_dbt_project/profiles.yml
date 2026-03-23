@@ -1,0 +1,10 @@
+fleetio_dbt_project:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      role: ACCOUNTADMIN
+      warehouse: DBT_WH
+      database: FLEETIO_DB
+      schema: RAW
+      threads: 8

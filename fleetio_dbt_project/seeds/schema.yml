@@ -1,0 +1,147 @@
+version: 2
+
+seeds:
+  - name: accounts
+    description: "seed file containing company accounts and their corresponding location and industry, fleet_size details."
+    config:
+      column_types:
+        id: varchar(100)
+        company: varchar(255)
+        primary_contact_id: varchar(100)
+        country: varchar(50)
+        state: varchar(100)
+        city: varchar(100)
+        industry: varchar(100)
+        fleet_size: varchar(50)
+    columns:
+      - name: id
+        description: "primary key for company accounts"
+        tests:
+          - unique
+          - not_null
+      - name: company
+        description: "company name"
+        tests:
+          - not_null
+      - name: primary_contact_id
+        description: "primary contact identifier"
+      - name: country
+        description: "2-letter country alias"
+        tests:
+          - not_null
+      - name: state
+        description: "states within country"
+      - name: city
+        description: "cities within the state"
+      - name: industry
+        description: "domain where company operates"
+      - name: fleet_size
+        description: "number of assets within the fleet"
+
+  - name: contacts
+    description: "seed file containing contact details."
+    config:
+      column_types:
+        id: varchar(100)
+        first_name: varchar(50)
+        last_name: varchar(50)
+        job_title: varchar(100)
+        email: varchar(255)
+        account_id: varchar(100)
+        lead_id: varchar(100)
+        created_at: timestamp
+    columns:
+      - name: id
+        description: "primary key for company contacts"
+        tests:
+          - unique
+          - not_null
+      - name: first_name
+        tests:
+          - not_null
+      - name: last_name
+        tests:
+          - not_null
+      - name: job_title
+      - name: email
+        tests:
+          - unique
+          - not_null
+      - name: account_id
+        description: "foreign key to accounts"
+      - name: lead_id
+        description: "foreign key to leads"
+      - name: created_at
+        description: "contact record created timestamp"
+
+  - name: leads
+    description: "seed file containing leads details."
+    config:
+      column_types:
+        id: varchar(100)
+        first_name: varchar(50)
+        last_name: varchar(50)
+        job_title: varchar(100)
+        email: varchar(255)
+        company: varchar(255)
+        created_at: timestamp
+        converted_at: timestamp
+        source: varchar(255)
+        country: varchar(50)
+        city: varchar(100)
+        state: varchar(100)
+        industry: varchar(100)
+        fleet_size: varchar(50)
+    columns:
+      - name: id
+        description: "The primary key for leads records"
+        tests:
+          - unique
+          - not_null
+      - name: first_name
+      - name: last_name
+      - name: job_title
+      - name: email
+        tests:
+          - unique
+          - not_null
+      - name: company
+      - name: created_at
+        description: "lead creation timestamp"
+      - name: converted_at
+        description: "lead conversion timestamp"
+      - name: source
+        description: "lead source"
+      - name: country
+        description: "2-letter country alias"
+      - name: city
+        description: "name of cities within the state"
+      - name: state
+        description: "name of states within the country"
+      - name: industry
+        description: "domain where company operates"
+      - name: fleet_size
+        description: "number of assets within the fleet"
+
+  - name: opportunities
+    description: "seed file containing opportunities details."
+    config:
+      column_types:
+        id: varchar(100)
+        account_id: varchar(100)
+        created_at: timestamp
+        closed_at: timestamp
+        is_closed: boolean
+        is_won: boolean
+        country: varchar(50)
+        state: varchar(100)
+        city: varchar(100)
+    columns:
+      - name: id
+        description: "The primary key for opportunities"
+        tests:
+          - unique
+          - not_null
+      - name: account_id
+        description: "foreign key to accounts"
+      - name: created_at
