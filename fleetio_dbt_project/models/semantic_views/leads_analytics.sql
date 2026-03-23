@@ -30,8 +30,18 @@ DIMENSIONS (
   leads.is_won AS is_won
 )
 METRICS (
-  leads.total_leads AS sum(leads.lead_conversion_counter),
+-- base metrics
+  leads.total_leads AS count(leads.lead_id),
+  leads.total_converted_leads AS sum(leads.lead_conversion_counter),
   leads.total_closed_opportunities AS sum(leads.is_closed_counter),
-  leads.total_won_opportunities AS sum(leads.is_won_counter)
+  leads.total_won_opportunities AS sum(leads.is_won_counter),
+
+-- Derived Metric (Calculation based on base metric)
+  open_opportunities AS sum(leads.lead_conversion_counter) - sum(leads.is_closed_counter),
+  lost_opportunities AS sum(leads.is_closed_counter) - sum(leads.is_won_counter),
+
+-- Derived Metric (Using already defined metrics) 
+  lead_conversion_rate AS leads.total_converted_leads / NULLIF(leads.total_leads, 0),
+  won_opportunity_rate AS leads.total_won_opportunities / NULLIF(leads.total_converted_leads, 0)
 )
 COMMENT = 'Semantic view for lead conversion analytics'
